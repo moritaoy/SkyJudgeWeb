@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+    {% if JudgeReload %}<meta http-equiv="refresh" content="6; URL="" ">{% endif %}
+    <div class="container mt-4">
+        <div class="card border-{{ bg_color }} mb-3">
+            <div class="card-header bg-{{ bg_color }} text-white">ジャッジ結果</div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="page-header">
+                            <h1 id="tables"><span class="badge badge-{{ bg_color }}">{{ ResultStatus }}</span></h1>
+                            {% if JudgeReload %}<p class="card-text">ページは自動更新されます。</p> {% endif %}
+                        </div>
+
+                        <div class="bs-component">
+                            <table class="table table-hover">
+                                <tbody>
+                                <tr class="table-info">
+                                    <th scope="row">JudgeID</th>
+                                    <td>{{ JudgeID }}</td>
+                                </tr>
+                                <tr class="table-info">
+                                    <th scope="row">ProblemID</th>
+                                    <td><a href="/problem/{{ ProblemID }}">{{ ProblemID }}</a></td>
+                                </tr>
+                                <tr class="table-info">
+                                    <th scope="row">Auther</th>
+                                    <td>{{ Auther }}</td>
+                                </tr>
+                                <tr class="table-info">
+                                    <th scope="row">Language</th>
+                                    <td> {{ Language }} </td>
+                                </tr>
+                                {% if JudgeStatus %}
+                                    <tr>
+                                        <th scope="row">正解数</th>
+                                        <td>{{ Accurrency }} / {{ Info_MaxCase }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">最大所要時間</th>
+                                        <td>{{ Time }}s</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">最大メモリ使用量</th>
+                                        <td>{{ Memory |filesizeformat }}</td>
+                                    </tr>
+                                {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% if JudgeStatus %}
+                            <div class="col-lg-6">
+                                <h2 id="nav-tabs">詳細情報</h2>
+                                <div class="card">
+                                    <div class="bs-component">
+                                        <ul class="nav nav-tabs">
+                                            <li class="nav-item">
+                                                <a class="nav-link active" data-toggle="tab" href="#message">Message</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" data-toggle="tab" href="#code">提出コード</a>
+                                            </li>
+                                        </ul>
+                                        <div id="myTabContent" class="tab-content">
+                                            <div style="white-space:pre-wrap; word-wrap:break-word;"
+                                                 class="tab-pane fade show active" id="message">
+                                                <pre class="prettyprint">{{ JudgeMessage }}</pre>
+                                            </div>
+                                            <div style="white-space:pre-wrap; word-wrap:break-word;"
+                                                 class="tab-pane fade"
+                                                 id="code">
+                                            <pre class="prettyprint">{{ Code }}</pre>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

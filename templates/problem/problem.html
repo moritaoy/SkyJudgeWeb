@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+    <div class="container my-3">
+
+        {% if message_warning %}
+            <div class="bs-component">
+                <div class="alert alert-dismissible alert-warning">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <h4 class="alert-heading">Warning!</h4>
+                    <p class="mb-0">{{ message_warning }}</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+        <div class="card">
+            <div class="card-header">
+                {{ problemName }}<br>
+                {% if Auther %}
+                    <small class="text-muted">{{ Auther }}</small><br>
+                {% endif %}
+                {% if allowSubmit %}
+                    <small class="text-muted">
+                        TLE: {{ TLE }}s, MLE: {{ MLE | filesizeformat }}, Test case: {{ Case }}
+                    </small>
+                {% endif %}
+            </div>
+            <div class="card-body">
+                <article class="markdown-body">
+                    {{ problemBody|safe }}
+                </article>
+            </div>
+        </div>
+    </div>
+    {% if allowSubmit %}
+        <div class="container">
+            <div class="card mb-3">
+                <div class="card-header">Submit</div>
+                <div class="card-body">
+                    <form name="Submit" id="Submit" action="" method="POST">
+                        <fieldset>
+                            <div class="form-group row">
+                                <label for="userID" class="col-sm-2 col-form-label">UserID</label>
+                                <div class="col-sm-10">
+                                    <input form="Submit" type="text" readonly="" class="form-control-plaintext"
+                                           id="userID" name="userID"
+                                           value="{{ userID }}">
+                                </div>
+                                <label for="problemID" class="col-sm-2 col-form-label">ProblemID</label>
+                                <div class="col-sm-10">
+                                    <input form="Submit" type="text" readonly="" class="form-control-plaintext"
+                                           id="problemID" name="problemID"
+                                           value="{{ problemID }}">
+                                    <small id="IDHelp" class="form-text text-muted">正しいIDが表示されているか確認してください。</small>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="LangSelect">言語</label>
+                                <select form="Submit" class="form-control" id="LangSelect" name="LangSelect">
+                                    {% for lang in langList %}
+                                        <option {% if lang == default_lang %} selected {% endif %}>{{ lang }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="Code">コード</label>
+                                <textarea class="form-control" id="Code" name="Code" rows="5"
+                                          wrap=off>{{ default_code }}</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputFile">ファイル選択</label>
+                                <input form="Submit_notfor" type="file" class="form-control-file" id="InputFile"
+                                       aria-describedby="fileHelp">
+                                <small id="fileHelp" class="form-text text-muted">プログラムコードをファイルから入力します。</small>
+                            </div>
+                            {% csrf_token %}
+                            <button form="Submit" type="submit" class="btn btn-primary">送信</button>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="container">
+            <div class="card mb-3">
+                <div class="card-header">Submit</div>
+                <div class="card-body">
+                    <p class="card-text">この問題では、提出は無効になっています。</p>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    <script>
+        var obj1 = document.getElementById("InputFile");
+        obj1.addEventListener("change", function (evt) {
+
+            var file = evt.target.files;
+            var reader = new FileReader();
+            reader.readAsText(file[0]);
+            reader.onload = function (ev) {
+                document.Submit.Code.value = reader.result;
+            }
+        }, false);
+    </script>
+{% endblock %}

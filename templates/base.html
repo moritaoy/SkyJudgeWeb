@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Sky Judge</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/github-markdown.css' %}">
+    <style type="text/css">
+        <!--
+        -->
+    </style>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+
+    <div class="bs-component">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand text-info" href="/">Sky Judge</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03"
+                    aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarColor03">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/problem">Problem</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Others
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="/problem/PATutorial">Tutorial</a>
+                            <!-- <a class="dropdown-item" href="#">Server Status</a> -->
+                            <a class="dropdown-item" href="/problem/PAContact">Contact</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        {% if user.is_authenticated %}
+                        <a class="nav-link text-primary" href="{% url 'user:user_detail' user.pk %}">
+                            {{ user.get_username }}
+                        </a>
+                        {% else %}
+                        <a class="nav-link" href="{% url 'user:login' %}">
+                            Login
+                        </a>
+                        {% endif %}
+                    </li>
+                    </a>
+                </ul>
+                <form class="form-inline my-2 my-lg-0" name="IDredirect" id="IDredirect" method="GET" action="/">
+                    <input class="form-control mr-sm-2" type="text" form="IDredirect" id="ID" name="ID" placeholder="Problem ID">
+                    <button class="btn btn-secondary my-2 my-sm-0" form="IDredirect" type="submit">Go</button>
+                </form>
+            </div>
+        </nav>
+    </div>
+</head>
+
+<body>
+{% block content %}
+{% endblock %}
+<div class="footer-copyright text-center py-3 bg-light">© 2020 Copyright:
+    <a href="#"> Sky Judge</a>
+</div>
+</body>
+</html>

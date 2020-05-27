@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <style type="text/css">
+        <!--
+        .sky-b{
+            background-image: url({% static "img/sky.png" %});
+            background-position: bottom;
+            background-size: auto 100%;
+        }
+        -->
+    </style>
+    <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light sky-b">
+        <div class="col-md-5 p-lg-5 mx-auto my-5 ">
+            <h1 class="display-4 font-weight-normal text-info">Sky Judge</h1>
+            {% if user.is_authenticated %}
+            <p class="lead font-weight-normal">ようこそ！ {{ user.username }}さん！</p>
+            <a class="btn btn-outline-secondary" href="#">問題作成</a>
+                {% if user.is_superuser %}
+                <a class="btn btn-outline-secondary" href="/admin_setting">管理</a>
+                {% endif %}
+            {% else %}
+            <p class="lead font-weight-normal">競プロ問題を作って、公開する</p>
+            <a class="btn btn-outline-secondary" href="{% url 'user:login' %}">ログイン</a>
+            {% endif %}
+        </div>
+    </div>
+
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="page-header">
+                    <h1 id="containers">お知らせ</h1>
+                </div>
+                <div class="bs-component">
+                    <div class="list-group">
+
+                        <a class="list-group-item list-group-item-action flex-column align-items-start">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">Sky Judge β</h5>
+                                <small class="text-muted">2020/05/19</small>
+                            </div>
+                            <p class="mb-1">Sky Judge を試験的に公開しています。詳しい使い方は下のチュートリアルをご覧ください。ご協力いただきありがとうございます！</p>
+                            <small>moritaoy</small>
+                        </a>
+
+                        <a class="list-group-item list-group-item-action flex-column align-items-start">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">お願い</h5>
+                                <small class="text-muted">2020/05/19</small>
+                            </div>
+                            <p class="mb-1">Betaのβはバグのβ　webアプリ開発初心者故、バグを埋め込んでいる可能性が高いです。もし、不具合を発見された際はフッターに記載の連絡先へご連絡いただけると幸いです。</p>
+                            <small>moritaoy</small>
+                        </a>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-4">
+        <div class="card mb-3">
+            <div class="card-header">ご案内</div>
+             <div class="card-body">
+                <h4 class="card-title">初めてSky Judgeを使う方へ</h4>
+                <p class="card-text">簡単なサイトの使い方を案内しています。</p>
+                 <p class="lead">
+                     <a class="btn btn-info btn" href="/problem/PATutorial" role="button">チュートリアル</a>
+                 </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

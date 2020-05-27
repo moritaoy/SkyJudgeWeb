@@ -1,0 +1,10 @@
+{{ user.username }} 様
+Sky Judgeへようこそ！
+
+下記URLよりサイトにアクセスの上、本登録をお願いします。
+まだ会員登録手続きは完了しておりませんので、ご注意ください。
+
+本登録用URL
+{{ protocol}}://{{ domain }}{% url 'user:user_create_complete' token %}
+
+Sky Judge

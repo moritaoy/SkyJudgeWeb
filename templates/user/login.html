@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="container mt-4">
+        <form action="" method="POST">
+            <div class="col-md-6 offset-md-3">
+                <div class="card">
+                    <div class="card-header">ログイン</div>
+                    <div class="card-body">
+                        {{ form.non_field_errors }}
+                        {% for field in form %}
+                            {{ field }}
+                            {{ field.errors }}
+                            <hr>
+                        {% endfor %}
+                        <button type="submit" class="btn btn-success btn-lg btn-block" >ログイン</button>
+                        <input type="hidden" name="next" value="{{ next }}" />
+                        {% csrf_token %}
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div class="card mb-3 mt-3">
+            <div class="card-header">アカウント作成</div>
+            <div class="card-body">
+                <p class="card-text">アカウントをお持ちでない方は、こちらからアカウントを作成できます。</p>
+                <p class="lead">
+                    <a class="btn btn-info btn" href="/user/create" role="button">アカウント作成</a>
+                </p>
+            </div>
+        </div>
+        <div class="card md-3 mt-3">
+            <div class="card-header">パスワードリセット</div>
+            <div class="card-body">
+                <p class="card-text">パスワードを忘れた方はこちら</p>
+                <p class="lead">
+                    <a class="btn btn-info btn" href="{% url "user:password_reset" %}" role="button">パスワードリセット</a>
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

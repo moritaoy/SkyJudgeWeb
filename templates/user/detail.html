@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<table class="table">
+    <tbody>
+        <tr>
+            <th>ユーザー名</th>
+            <td>{{ user.username }}</td>
+        </tr>
+        <tr>
+            <th>メールアドレス</th>
+            <td>{{ user.email }}</td>
+        </tr>
+    </tbody>
+    <a class="btn btn-primary" href="{% url "user:logout" %}">ログアウト</a>
+    <a class="btn btn-primary" href="{% url "user:password_change" %}">パスワード変更</a>
+</table>
+{% endblock %}

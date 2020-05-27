@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="container mt-4">
+        <div class="card mb-3">
+            <div class="card-header">ジャッジ結果について</div>
+            <div class="card-body">
+                <h4 class="card-title">ジャッジ結果の一例</h4>
+                <p class="card-text">ジャッジ結果は以下のように表示されます。</p>
+                <div class="card border-success mb-3">
+                    <div class="card-header bg-success text-white">ジャッジ結果</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="page-header">
+                                    <h1 id="tables"><span class="badge badge-success">AC</span></h1>
+                                </div>
+
+                                <div class="bs-component">
+                                    <table class="table table-hover">
+                                        <tbody>
+                                        <tr class="table-info">
+                                            <th scope="row">JudgeID</th>
+                                            <td>JU0000000000-00000000</td>
+                                        </tr>
+                                        <tr class="table-info">
+                                            <th scope="row">ProblemID</th>
+                                            <td><a href="/problem/PAHello-World">PAHello-World</a></td>
+                                        </tr>
+                                        <tr class="table-info">
+                                            <th scope="row">Auther</th>
+                                            <td> admin</td>
+                                        </tr>
+                                        <tr class="table-info">
+                                            <th scope="row">Language</th>
+                                            <td> text </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">正解数</th>
+                                            <td>1/1</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">最大所要時間</th>
+                                            <td>0s</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">最大メモリ使用量</th>
+                                            <td>3.2MB</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <h2 id="nav-tabs">詳細情報</h2>
+                                    <div class="card">
+                                        <div class="bs-component">
+                                            <ul class="nav nav-tabs">
+                                                <li class="nav-item">
+                                                    <a class="nav-link active" data-toggle="tab"
+                                                       href="#message">Message</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" data-toggle="tab" href="#code">提出コード</a>
+                                                </li>
+                                            </ul>
+                                            <div id="myTabContent" class="tab-content">
+                                                <div style="white-space:pre-wrap; word-wrap:break-word;"
+                                                     class="tab-pane fade show active" id="message">
+                                                    <pre class="prettyprint"> </pre>
+                                                </div>
+                                                <div style="white-space:pre-wrap; word-wrap:break-word;"
+                                                     class="tab-pane fade"
+                                                     id="code">
+                                                    <pre class="prettyprint"> Hello World </pre>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h4 class="card-title">ジャッジ結果の意味</h4>
+                <p class="card-text">それぞれの項目は、以下のような意味を持ちます。</p>
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title"><span class="badge badge-success">AC</span></h4>
+                        <p class="card-text">ジャッジの結果を示しています。いくつかの種類があり、それぞれ以下のような意味を示します。</p>
+                        <table class="table table-hover">
+                            <tbody>
+                            <tr class="table">
+                                <th scope="row"><span class="badge badge-success">AC</span></th>
+                                <td>問題に正解した事を示します。</td>
+                            </tr>
+                            <tr class="table">
+                                <th scope="row"><span class="badge badge-danger">WA</span></th>
+                                <td>プログラムは正常に動作したものの、出力が不正解であったことを示します。</td>
+                            </tr>
+                            <tr class="table">
+                                <th scope="row"><span class="badge badge-danger">CE</span></th>
+                                <td>プログラムのコンパイルに失敗したことを示します。</td>
+                            </tr>
+                            <tr class="table">
+                                <th scope="row"><span class="badge badge-danger">RE</span></th>
+                                <td>実行中にエラーが発生したことを示します。main関数が0以外の結果を返した場合もREとなります。</td>
+                            </tr>
+                            <tr class="table">
+                                <th scope="row"><span class="badge badge-danger">TLE</span></th>
+                                <td>制限時間内にプログラムが終了しなかったことを示します。なお、制限時間を超えてプログラムが処理し続けた場合、1.5秒後を目安に処理を打ち切ります。</td>
+                            </tr>
+                            <tr class="table">
+                                <th scope="row"><span class="badge badge-danger">JNA</span></th>
+                                <td>ジャッジデータが見つからなかった事を示します。サーバー側の問題である可能性もあります。</td>
+                            </tr>
+                            <tr class="table">
+                                <th scope="row"><span class="badge badge-danger">IE</span></th>
+                                <td>サーバー側で問題が発生したことを示します。何度も発生する場合、JudgeIDを添えてお問い合わせください。</td>
+                            </tr>
+                            <tr class="table">
+                                <th scope="row"><span class="badge badge-secondary">WJ</span></th>
+                                <td>ジャッジが終わっていないことを示します。ジャッジには数秒から数分かかる場合があります。</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">JudgeID</h4>
+                        <p class="card-text">提出の際に付与された固有のIDです。<br>他の人にJudgeIDを伝えることで、提出したコードを共有することができます。<br></br>なおこのIDは自身が共有するか、コンテスト等のJudgeIDが公開されるコンテンツにて提出しない限り公開されません。
+                        </p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">ProblemID</h4>
+                        <p class="card-text">問題のIDです。クリックすると、該当する問題を確認することができます。</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Auther</h4>
+                        <p class="card-text">コードを提出した人のユーザーネームを示します。</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Language</h4>
+                        <p class="card-text">選択された言語の種類を示します。</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">正解数</h4>
+                        <p class="card-text">テストケースに対して、何ケース目まで正解できたかを示します。<br></br>なお、このジャッジシステムではTLE等を含め不正解となった時点で、ジャッジは打ち切られます。
+                        </p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">最大所要時間</h4>
+                        <p class="card-text">テストケース一つにつき、プログラムが終了するまでにかかった時間の最大値です。</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">最大メモリ使用量</h4>
+                        <p class="card-text">テストケース一つにつき、プログラムが使用したメモリの最大値です。</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Message</h4>
+                        <p class="card-text">コンパイルエラーのログ等、ジャッジサーバーからのメッセージがある場合に表示されます。</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">提出コード</h4>
+                        <p class="card-text">提出されたコードを示します。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <div class="container mt-4">
+        <div class="card border-success mb-3">
+            <div class="card-header">本登録</div>
+            <div class="card-body">
+                <h4 class="card-title">登録完了</h4>
+                <p class="card-text">
+                    会員登録が完了しました<br>
+                    登録したユーザー名とパスワードでログインしてください。<br>
+                </p>
+                <a class="btn btn-primary btn-lg" href="{% url 'user:login' %}">ログイン</a>
+            </div>
+        </div>
+    </div>
+
+</p>
+{% endblock %}
