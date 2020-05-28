@@ -2,18 +2,50 @@
 {% load static %}
 
 {% block content %}
-<table class="table">
-    <tbody>
-        <tr>
-            <th>ユーザー名</th>
-            <td>{{ user.username }}</td>
-        </tr>
-        <tr>
-            <th>メールアドレス</th>
-            <td>{{ user.email }}</td>
-        </tr>
-    </tbody>
-    <a class="btn btn-primary" href="{% url "user:logout" %}">ログアウト</a>
-    <a class="btn btn-primary" href="{% url "user:password_change" %}">パスワード変更</a>
-</table>
+    <div class="container mt-4">
+        <div class="card mb-3">
+            <div class="card-header">ユーザー情報</div>
+            <div class="card-body">
+                <tbody>
+                <table class="table">
+                    <tr>
+                        <th>ユーザー名</th>
+                        <td>{{ user.username }}</td>
+                    </tr>
+                    <tr>
+                        <th>メールアドレス</th>
+                        <td>{{ user.email }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <p class="lead">
+                    <a class="btn btn-primary" href="{% url "user:logout" %}">ログアウト</a>
+                    <a class="btn btn-primary" href="{% url "user:password_change" %}">パスワード変更</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-4">
+        <div class="card mb-3">
+            <div class="card-header">問題情報</div>
+            <div class="card-body">
+                <h4 class="card-title">作成した問題一覧</h4>
+                <tbody>
+                <table class="table">
+                    {% for problem in user.get_problem_list %}
+                        <tr>
+                            <th>{{ problem.0 }}</th>
+                            <td>{{ problem.1 }}</td>
+                            <td><a class="btn btn-info" href="{% url "problem:problem_edit" problem.0 %}">編集</a></td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                </tbody>
+                <p class="lead">
+                    <a class="btn btn-primary" href="#">問題作成</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}

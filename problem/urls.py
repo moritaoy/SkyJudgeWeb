@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-
+app_name="problem"
 urlpatterns = [
     path('edit/<slug:problemID>',views.problem_edit, name='problem_edit'),
     path('<slug:problemID>', views.problem,  name='problem'),

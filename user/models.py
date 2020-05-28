@@ -7,6 +7,7 @@ from django.utils import timezone
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.contrib.auth.base_user import BaseUserManager
 
+import ast
 
 class CustomUserManager(BaseUserManager):
     """ユーザーマネージャー"""
@@ -76,6 +77,20 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
 
+    submit_history = models.CharField(
+        _('submit_history'),
+        max_length=50000,
+        default="[]",
+        help_text=_('submitted judgeID list')
+    )
+
+    problem_list = models.CharField(
+        _('problem_list'),
+        max_length=50000,
+        default="[]",
+        help_text=_('Created Problem List')
+    )
+
     objects = CustomUserManager()
 
     EMAIL_FIELD = 'email'
@@ -95,7 +110,29 @@ class User(AbstractBaseUser, PermissionsMixin):
         """Return the short name for the user."""
         return self.username
 
+    def get_submit_history(self):
+        return ast.literal_eval(self.submit_history)
+
+    def add_submit(self, id,name):
+        val = ast.literal_eval(self.submit_history)
+        if len(val) > 300:
+            val.pop(0)
+        val.append([id,name])
+        self.submit_history = str(val)
+
+    def get_problem_list(self):
+        return ast.literal_eval(self.problem_list)
+
+    def add_problem(self, ids, name):
+        val = ast.literal_eval(self.submit_history)
+        val.append([ids,name])
+        self.problem_list = str(val)
+
+    def remove_problem(self, problemID):
+        val = self.problem_list.split(',,')
+        val.remove(problemID)
+        self.problem_list = ',,'.join(val)
+
     def email_user(self, subject, message, from_email=None, **kwargs):
         """Send an email to this user."""
         send_mail(subject, message, from_email, [self.email], **kwargs)
-

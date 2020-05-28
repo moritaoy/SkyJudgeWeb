@@ -13,17 +13,27 @@ from django.contrib.auth.views import (
     LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView,
     PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 )
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from django.urls import reverse_lazy
 from .forms import (
     LoginForm, UserCreateForm, UserUpdateForm, MyPasswordChangeForm, MyPasswordResetForm, MySetPasswordForm,
 )
 
+def paginate_queryset(request, queryset, count):
+    paginator = Paginator(queryset, count)
+    page = request.GET.get('page')
+    try:
+        page_obj = paginator.page(page)
+    except PageNotAnInteger:
+        page_obj = paginator.page(1)
+    except EmptyPage:
+        page_obj = paginator.page(paginator.num_pages)
+    return page_obj
 
 def user_index(request):
-    if request.user.is_authenticated:
-        HttpResponseRedirect("user/detail")
     return render(request, 'index.html', {})
+
 
 class Login(LoginView):
     """ログインページ"""
@@ -124,6 +134,7 @@ class UserDetail(OnlyYouMixin, generic.DetailView):
     template_name = 'user/detail.html'
 
 
+
 class UserUpdate(OnlyYouMixin, generic.UpdateView):
     model = User
     form_class = UserUpdateForm
@@ -131,6 +142,7 @@ class UserUpdate(OnlyYouMixin, generic.UpdateView):
 
     def get_success_url(self):
         return resolve_url('user:user_detail', pk=self.kwargs['pk'])
+
 
 class PasswordChange(PasswordChangeView):
     """パスワード変更ビュー"""
@@ -142,6 +154,7 @@ class PasswordChange(PasswordChangeView):
 class PasswordChangeDone(PasswordChangeDoneView):
     """パスワード変更しました"""
     template_name = 'user/password_change_done.html'
+
 
 class PasswordReset(PasswordResetView):
     """パスワード変更用URLの送付ページ"""
