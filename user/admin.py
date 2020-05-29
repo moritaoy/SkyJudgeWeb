@@ -26,6 +26,7 @@ class MyUserAdmin(UserAdmin):
         (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser',
                                        'groups', 'user_permissions')}),
         (_('Problems'), {'fields': ('max_problem_num',)}),
+        (_('IDlist'), {'fields': ('problem_list','submit_history')}),
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
     )
     add_fieldsets = (

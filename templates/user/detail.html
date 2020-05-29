@@ -16,6 +16,10 @@
                         <th>メールアドレス</th>
                         <td>{{ user.email }}</td>
                     </tr>
+                    <tr>
+                        <th>作成可能問題数</th>
+                        <td>{{ user.max_problem_num }}</td>
+                    </tr>
                     </tbody>
                 </table>
                 <p class="lead">
@@ -42,7 +46,7 @@
                 </table>
                 </tbody>
                 <p class="lead">
-                    <a class="btn btn-primary" href="#">問題作成</a>
+                    <a class="btn btn-primary" href="{% url "problem:problem_create" %}">問題作成</a>
                 </p>
             </div>
         </div>
