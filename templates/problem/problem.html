@@ -23,7 +23,7 @@
                 {% endif %}
                 {% if allowSubmit %}
                     <small class="text-muted">
-                        TLE: {{ TLE }}s, MLE: {{ MLE | filesizeformat }}, Test case: {{ Case }}
+                        TLE: {{ TL }}s, MLE: {{ ML | filesizeformat }}, Test case: {{ Case }}
                     </small>
                 {% endif %}
             </div>
@@ -46,7 +46,7 @@
                                 <div class="col-sm-10">
                                     <input form="Submit" type="text" readonly="" class="form-control-plaintext"
                                            id="userID" name="userID"
-                                           value="{{ user.userID }}">
+                                           value="{{ userID }}">
                                 </div>
                                 <label for="problemID" class="col-sm-2 col-form-label">ProblemID</label>
                                 <div class="col-sm-10">

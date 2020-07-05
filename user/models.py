@@ -113,25 +113,27 @@ class User(AbstractBaseUser, PermissionsMixin):
     def get_submit_history(self):
         return ast.literal_eval(self.submit_history)
 
-    def add_submit(self, id,name):
+    def add_submit(self, ids, name):
         val = ast.literal_eval(self.submit_history)
         if len(val) > 300:
             val.pop(0)
-        val.append([id,name])
+        val.append([ids,name])
         self.submit_history = str(val)
+        self.save()
 
     def get_problem_list(self):
         return ast.literal_eval(self.problem_list)
 
     def add_problem(self, ids, name):
-        val = ast.literal_eval(self.submit_history)
-        val.append([ids,name])
+        val = ast.literal_eval(self.problem_list)
+        val.append([ids, name])
         self.problem_list = str(val)
+        self.save()
 
-    def remove_problem(self, problemID):
-        val = self.problem_list.split(',,')
-        val.remove(problemID)
-        self.problem_list = ',,'.join(val)
+    #def remove_problem(self, problemID):
+        #val = self.problem_list.split(',,')
+        #val.remove(problemID)
+        #self.problem_list = ',,'.join(val)
 
     def email_user(self, subject, message, from_email=None, **kwargs):
         """Send an email to this user."""

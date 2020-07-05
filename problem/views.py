@@ -42,15 +42,14 @@ def problem(request, problemID, cont_in={}):
     try:
         md = markdown.Markdown()
         problemBody = md.convert(problemData['ProblemBody'])
-
         context = {'problemID': problemID,
                    'problemName': problemData['ProblemName'],
                    'userID': "Guest",
                    "problemBody": problemBody,
                    "langList": problemData['LangList'],
                    "allowSubmit": problemData['AllowSubmit'],
-                   "TLE": problemData['Config_TL'],
-                   "MLE": problemData['Config_ML'] * 1024,
+                   "TL": problemData['Config_TL'],
+                   "ML": int(problemData['Config_ML']) * 1024,
                    "Case": problemData['Config_Case']
                    }
         context.update(cont_in)
@@ -135,12 +134,12 @@ def problem_create(request, cont={}):
 
 
 def title_validator(s):
-    return s.replace('-', '').isalnum()
+    return s.replace('-', '').encode('utf-8').isalnum()
 
 
 def problem_create_submit(request):
     req_item = request.POST
-    problem_list=User.get_problem_list(request.user)
+    problem_list = User.get_problem_list(request.user)
     if len(problem_list) >= request.user.max_problem_num:
         return problem_create(request, {
             'message_warning': "作成可能な数を超えています。作成数の増加を希望する場合、運営者までご連絡ください。"
@@ -175,7 +174,7 @@ def problem_create_submit(request):
         "Author": request.user.username,
         "AllowAllLang": True,
         "LangList": [],
-        "ProblemBody": "#Hello Problem",
+        "ProblemBody": "# Hello Problem",
         "ProblemID": problemID,
         "ProblemName": req_item['title'],
         "Config_Case": 0,
@@ -184,9 +183,83 @@ def problem_create_submit(request):
         "WhiteList": [request.user.username, ]
     }
     problemdb.put_item(Item=item)
-    User.add_problem(request.user,problemID,req_item['title'])
-    request.user.save()
-    return problem_edit(request,problemID)
+    user = User.objects.get(username=request.user.username)
+    user.add_problem(problemID, req_item['title'])
+    return problem_edit(request, problemID, {"message_warning": "問題の作成が完了しました。"})
 
-def problem_edit(request, problemID):
-    return
+
+def problem_edit(request, problemID, cont={}):
+    if request.method == 'POST' and 'message_warning' not in cont:
+        return problem_edit_submit(request, problemID)
+    problemData = problemdb.get_item(
+        Key={
+            'ProblemID': problemID
+        }
+    )
+    if 'Item' not in problemData:
+        raise Http404('problem not found')
+    problemData = problemData['Item']
+    if problemData['Author'] != request.user.username and not request.user.is_superuser:
+        raise Http404('problem not found.')
+    try:
+        problemBody = problemData['ProblemBody']
+
+        context = {'problemID': problemID,
+                   'problemName': problemData['ProblemName'],
+                   'title': problemData['ProblemName'],
+                   "problemBody": problemBody,
+                   "langList": problemData['LangList'],
+                   "allowSubmit": problemData['AllowSubmit'],
+                   "allowAccess": problemData['AllowAccess'],
+                   "TL": problemData['Config_TL'],
+                   "ML": problemData['Config_ML'] * 1024,
+                   "Case": problemData['Config_Case']
+                   }
+        context.update(cont)
+        if 'AllowAllLang' in problemData:
+            if problemData['AllowAllLang']:
+                context["langList"] = LangDefault
+    except Exception as e:
+        print(e)
+        context = {'message_warning': "問題を読み込む際に問題が発生しました。想定されないエラー",
+                   'allowSubmit': False
+                   }
+    return render(request, 'problem/edit.html', context)
+
+
+def problem_edit_submit(request, ProblemID):
+    req_item = request.POST
+    print(req_item)
+    problem_list = User.get_problem_list(request.user)
+    if not [req_item['problemID'], req_item['ProblemName']] in problem_list:
+        return problem_create(request, {
+            'message_warning': "タイトルと問題IDが不正です。想定されないエラー"
+        })
+    if int(req_item['Config_TL']) not in allow_TL_list and int(req_item['Config_ML']) not in allow_ML_list:
+        return problem_create(request, {
+            'message_warning': "TL MLの設定に許可できない値がありました。想定されないエラー"
+        })
+    if len(req_item['ProblemBody']) >= 200000:
+        return problem_create(request, {
+            'message_warning': "問題文が長すぎます。"
+        })
+    if 'AllowSubmit' in req_item:
+        als=True
+    else:
+        als=False
+    if 'AllowAccess' in req_item:
+        ala=True
+    else:
+        ala=False
+    problemdb.update_item(
+        Key={'ProblemID': req_item['problemID']},
+        UpdateExpression='set AllowAccess = :AllowAccess, AllowSubmit = :AllowSubmit, ProblemBody = :ProblemBody, Config_ML = :Config_ML, Config_TL = :Config_TL',
+        ExpressionAttributeValues={
+            ':AllowAccess': ala,
+            ':AllowSubmit': als,
+            ":ProblemBody": req_item['ProblemBody'],
+            ":Config_ML": req_item['Config_ML'],
+            ":Config_TL": req_item['Config_TL'],
+        }
+    )
+    return problem_edit(request, req_item['problemID'], {"message_warning": "問題の編集が完了しました。"})
